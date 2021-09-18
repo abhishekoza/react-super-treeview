@@ -190,7 +190,8 @@ class SuperTreeview extends Component {
             depth,
             transitionEnterTimeout,
             transitionExitTimeout,
-            getStyleClassCb
+            getStyleClassCb,
+            renderNode,
         } = this.props;
         const {
             printExpandButton,
@@ -231,13 +232,14 @@ class SuperTreeview extends Component {
                                       <div className="super-treeview-node-content">
                                           {printExpandButton(node, depth)}
                                           {printCheckbox(node, depth)}
-                                          <label
+                                          {renderNode ? renderNode(node) : (<label
                                               htmlFor={node.id}
                                               title={nodeText}
                                               className="super-treeview-text"
                                           >
                                               {nodeText}
-                                          </label>
+                                          </label>)}
+                                          
                                           {printDeleteButton(node, depth)}
                                       </div>
                                       {printChildren(node)}
@@ -311,7 +313,9 @@ SuperTreeview.propTypes = {
     keywordChildrenLoading: PropTypes.string,
     keywordKey: PropTypes.string,
     keywordLabel: PropTypes.string,
-
+    
+    renderNode: PropTypes.function,
+    
     loadingElement: PropTypes.element,
     noChildrenAvailableMessage: PropTypes.string,
 
@@ -346,6 +350,7 @@ SuperTreeview.defaultProps = {
     keywordChildrenLoading: 'isChildrenLoading',
     keywordLabel: 'name',
     keywordKey: 'id',
+    renderNode: () => {},
 
     loadingElement: <div>loading...</div>,
 
